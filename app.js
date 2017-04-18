@@ -1,6 +1,5 @@
 console.log('Hello nodemon');
 
-// const fs = require('fs');
 //dung cai thu vien express
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -10,7 +9,6 @@ const imageController = require(__dirname + '/modules/images/imageController.js'
 var app = express();
 
 //set public folder public
-//app.use(urlencoded)
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json({extended: true}));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -89,10 +87,11 @@ app.delete('/image', (req, res) => {
 
   var name = req.body.name;
 
+  imageController.deleteImageByName(imageInfoCollection, name);
   //filter nhung obj co ten la name
-  imageInfoCollection = imageInfoCollection.filter(function(el){
-    return el.name !== name;
-  })
+  // imageInfoCollection = imageInfoCollection.filter(function(el){
+  //   return el.name !== name;
+  // })
 
   imageController.saveImageCollection(imageInfoCollection);
 })
