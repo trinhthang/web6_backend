@@ -21,11 +21,11 @@ var saveImageCollection = (data) => {
   fs.writeFileSync('imageData.json', JSON.stringify(data));
 }
 
-var deleteImageByName = (imageInfoCollection, name) => {
-  imageInfoCollection = imageInfoCollection.filter(function(el){
-    return el.name !== name;
-  })
-}
+// var deleteImageByName = (imageInfoCollection, name) => {
+//   imageInfoCollection = imageInfoCollection.filter(function(el){
+//     return el.name !== name;
+//   })
+// }
 
 module.exports = {
   fetchImageCollection : fetchImageCollection,

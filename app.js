@@ -87,11 +87,10 @@ app.delete('/image', (req, res) => {
 
   var name = req.body.name;
 
-  imageController.deleteImageByName(imageInfoCollection, name);
-  //filter nhung obj co ten la name
-  // imageInfoCollection = imageInfoCollection.filter(function(el){
-  //   return el.name !== name;
-  // })
+  // imageController.deleteImageByName(imageInfoCollection, name);
+  imageInfoCollection = imageInfoCollection.filter(function(el){
+    return el.name !== name;
+  })
 
   imageController.saveImageCollection(imageInfoCollection);
 })
