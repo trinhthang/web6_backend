@@ -33,17 +33,19 @@ app.post('/image', (req, res) => {
   //push data moi vao colection
   imageInfoCollection.push(imageInfo);
 
-  //luu lai vao file
   imageController.saveImageCollection(imageInfoCollection);
-  // fs.writeFileSync('imageData.json', JSON.stringify(imageInfoCollection));
 
   //bao thanh cong
   res.send('Đã thêm 1 gái vào giỏ hàng :3');
 })
 
 app.get('/image', (req,res) => {
-
-  var imageInfoCollection = imageController.fetchImageCollection();
+  var name = req.query.keyword;
+  var imageInfoCollection;
+  if (req.query.displayall === "ALL"){
+    imageInfoCollection = imageController.fetchImageCollection();
+  }
+  else imageInfoCollection = imageController.findImageByName(name);
 
   var htmlString = '';
 
@@ -52,25 +54,18 @@ app.get('/image', (req,res) => {
     <img src="${data.imageLink}">
     <div>${data.description}</div>`;
   });
+
   res.send(htmlString);
 })
 
 app.put('/image', (req, res) => {
-  var imageInfoCollection = imageController.fetchImageCollection();
+  var data = {
+    name : req.body.name,
+    imageLink : req.body.imageLink,
+    description : req.body.description
+  }
 
-  var name = req.body.name;
-  var imageLink = req.body.imageLink;
-  var description = req.body.description;
-
-  //tim kiem bang name,link va thay the
-  imageInfoCollection.forEach((data) => {
-    if (data.name == name){
-      data.imageLink = imageLink;
-      data.description = description
-    }
-  })
-
-  imageController.saveImageCollection(imageInfoCollection);
+  imageController.updateImage(data);
 
 })
 
