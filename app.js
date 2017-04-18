@@ -40,12 +40,15 @@ app.post('/image', (req, res) => {
 })
 
 app.get('/image', (req,res) => {
-  var name = req.query.keyword;
+
   var imageInfoCollection;
-  if (req.query.displayall === "ALL"){
+  
+  if (req.query.displayall === "all"){
     imageInfoCollection = imageController.fetchImageCollection();
+  } else {
+    var name = req.query.keyword;
+    imageInfoCollection = imageController.findImageByName(name);
   }
-  else imageInfoCollection = imageController.findImageByName(name);
 
   var htmlString = '';
 
