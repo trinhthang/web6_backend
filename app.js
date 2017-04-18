@@ -68,14 +68,6 @@ app.put('/image', (req, res) => {
       data.imageLink = imageLink;
       data.description = description
     }
-    // else if (name =='' && data.imageLink == imageLink) {
-    //   var imageInfo = {
-    //     name : name,
-    //     imageLink : imageLink,
-    //     description : description
-    //   }
-    //   imageInfoCollection.push(imageInfo);
-    // }
   })
 
   imageController.saveImageCollection(imageInfoCollection);
@@ -83,16 +75,11 @@ app.put('/image', (req, res) => {
 })
 
 app.delete('/image', (req, res) => {
-  var imageInfoCollection = imageController.fetchImageCollection();
 
   var name = req.body.name;
 
-  // imageController.deleteImageByName(imageInfoCollection, name);
-  imageInfoCollection = imageInfoCollection.filter(function(el){
-    return el.name !== name;
-  })
+  imageController.deleteImageByName(name);
 
-  imageController.saveImageCollection(imageInfoCollection);
 })
 //mo 1 cai port de chay local
 app.listen(6969, (req, res) => {
