@@ -11,11 +11,19 @@ var addImage = (data) => {
   })
 }
 
-var getAll = () => {
+var read = () => {
   try {
       imagesModel.find({});
   } catch (e) {
+      console.log(e);
+  }
+}
 
+var readById = (search_id) => {
+  try {
+    imagesModel.find({id: search_id});
+  } catch (e) {
+      console.log(e);
   }
 }
 
@@ -32,18 +40,21 @@ var updateImageCollectionById = (id, newData) => {
   }
 }
 var deleteImageCollectionById = (delete_id) => {
-  try {
-    imagesModel.deleteOne(
-      { id : delete_id}
-    )
-  } catch (e) {
-    console.log(e);
-  }
+    if (delete_id > 0 && delete_id <= imagesModel.length){
+      imagesModel.deleteOne(
+        { id : delete_id},
+        (err, doc) => {
+          if(err) console.log(e);
+          else console.log(doc);
+        }
+      )
+    } else res.send("invalid id")
 }
 
 module.exports = {
   addImage,
-  getAll,
+  read,
+  readById,
   updateImageCollectionById,
   deleteImageCollectionById
 }

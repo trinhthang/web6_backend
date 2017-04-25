@@ -21,7 +21,13 @@ Router.post('/', (req, res) => {
 })
 
 Router.get('/', (req, res) => {
-  imagesController.getAll();
+  try {
+    if (req.query.id){
+      imagesController.readById(req.query.body)
+    } else imagesController.read();
+  } catch (e) {
+    console.log(e);
+  }
 })
 
 Router.put('/', (req, res) => {
@@ -35,8 +41,12 @@ Router.put('/', (req, res) => {
 })
 
 Router.delete('/', (req, res) => {
-  var id = req.body.id;
-  imagesController.deleteImageCollectionById(id);
+  try {
+    var id = req.body.id;
+    imagesController.deleteImageCollectionById(id);
+  } catch (e) {
+    console.log(e);
+  }
 })
 
 module.exports = Router;
