@@ -7,14 +7,14 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const config = require('./config.json');
-
 const imagesRouter = require(__dirname + '/modules/api/images/');
+const usersRouter = require(__dirname + '/modules/api/users/');
 
 var app = express();
 
 //set public folder public
 app.use(express.static(__dirname + '/public'));
-app.use(bodyParser.json({extended: true}));
+app.use(bodyParser.json({ extended : true}));
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/', (req, res) => {
@@ -22,16 +22,17 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/image', imagesRouter);
+app.use('/api/user', usersRouter);
 
-//ket no database
 mongoose.connect(config.connectionString, (err) => {
-  if (err){
+  if (err) {
     console.log(err);
   } else {
-    console.log("Connect to db Success");
+    console.log('Connected db success');
   }
 })
+
 //mo 1 cai port de chay local
 app.listen(config.port, (req, res) => {
-  console.log('app listen on 6969');
+  console.log(`app listen on ${config.port}`);
 })

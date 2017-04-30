@@ -1,60 +1,87 @@
-const fs = require('fs');
 const imagesModel = require('./imagesModel');
 
-var addImage = (data) => {
-  imagesModel.create(data, (err, doc) => {
-    if(err){
+var addImage = (data, callback) => {
+  imagesModel.findOne({}).select('id').sort({id : -1})
+  .exec((err, doc) => {
+    if (err) {
       console.log(err);
+      callback(err);
     } else {
-      console.log(doc);
+      var id;
+      if (doc && doc.id) {
+        id = doc.id + 1;
+      } else {
+        id = 1;
+      }
+      data.id = id;
+      imagesModel.create(data, (err, doc) => {
+        if (err) {
+          console.log(err);
+          callback(err);
+        } else {
+          console.log(doc);
+          callback(null, doc);
+        }
+      })
+    }
+  });
+
+}
+
+var getAllImage = (callback) => {
+  imagesModel.find({}, (err, doc) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, doc);
+    }
+  });
+}
+
+var getImageById = (id,callback) => {
+  imagesModel.find({"id" : id}, (err, doc) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, doc);
     }
   })
 }
 
-var read = () => {
-  try {
-      imagesModel.find({});
-  } catch (e) {
-      console.log(e);
-  }
+
+var updateImageById = (newData) => {
+  imagesModel.findOneAndUpdate({"id" : newData.id}, newData, (err) => {
+    if (err){
+      console.log(err);
+    } else {
+      console.log("Changed image's infomation");
+    }
+  })
 }
 
-var readById = (search_id) => {
-  try {
-    imagesModel.find({id: search_id});
-  } catch (e) {
+var deleteImageById = (id) =>{
+  imagesModel.remove({"id" : id}, (err) => {
+    if (err) {
       console.log(e);
-  }
+    }
+  })
 }
 
-var updateImageCollectionById = (id, newData) => {
-  try {
-    imagesModel.updateOne(
-      { id : id },
-      {
-        $set : {imageLink : newData.imageLink, description : newData.description}
-      }
-    )
-  } catch (e) {
-    console.log(e);
-  }
-}
-var deleteImageCollectionById = (delete_id) => {
-    if (delete_id > 0 && delete_id <= imagesModel.length){
-      imagesModel.deleteOne(
-        { id : delete_id},
-        (err, doc) => {
-          if(err) console.log(e);
-          else console.log(doc);
-        }
-      )
-    } else res.send("invalid id")
+var searchImageByName = (name, callback) => {
+  imagesModel.find({"name" : {"$regex": name} }, (err, doc) => {
+    if (err){
+      callback(err);
+    } else {
+      callback(null, doc);
+    }
+  })
 }
 
 module.exports = {
   addImage,
-  read,
-  readById,
-  updateImageCollectionById,
-  deleteImageCollectionById
+  getAllImage,
+  getImageById,
+  updateImageById,
+  deleteImageById,
+  searchImageByName
 }
