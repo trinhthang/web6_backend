@@ -24,15 +24,37 @@ Router.post('/', (req, res) => {
 });
 
 Router.get('/', (req, res) => {
-  var search_name = req.query.username;
 
-  usersController.searchUserByName(search_name, (err, doc) => {
-    if (err){
-      console.log(err);
-    } else {
-      res.send(doc);
-    }
-  })
+
+  if (req.query.username) {
+    var search_name = req.query.username;
+    usersController.searchUserByName(search_name, (err, doc) => {
+      if (err){
+        console.log(err);
+      } else {
+        res.send(doc);
+      }
+    })
+  } else if (req.query.id) {
+    usersController.getUserById(req.query.id, (err, doc) => {
+      if (err){
+        console.log(err);
+      } else {
+        res.send(doc);
+      }
+    })
+  } else {
+    usersController.getAllUser((err, doc) => {
+      if (err) {
+        console.log(err);
+        res.send("Err");
+      } else {
+        res.send(doc);
+      }
+    })
+  }
+
+
 })
 
 module.exports = Router;

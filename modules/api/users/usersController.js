@@ -36,8 +36,28 @@ var searchUserByName = (name, callback) => {
     }
   })
 }
+var getAllUser = (callback) => {
+  usersModel.find({}, (err, doc) => {
+    if (err){
+      callback(err);
+    } else {
+      callback(null, doc);
+    }
+  })
+}
 
+var getUserById = (id, callback) => {
+  usersModel.find({"id" : id}, (err, doc) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, doc);
+    }
+  })
+}
 module.exports = {
   addUser,
-  searchUserByName
+  searchUserByName,
+  getAllUser,
+  getUserById
 }

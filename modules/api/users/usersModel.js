@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 var bcrypt = require('bcrypt');
 
+var validator = require('validator');
+
 const Schema = mongoose.Schema;
 
 var usersModel = new Schema({
@@ -10,13 +12,13 @@ var usersModel = new Schema({
   password : {type : String, required : true},
   email : {
     type : String,
-    // validate : {
-    //   validator : function(email){
-    //     regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    //     return regex.test(email);
-    //   },
-    //   message : 'invalid email'
-    // }
+    validate : {
+      validator : function(email){
+        regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        return regex.test(email);
+      },
+      message : 'invalid email'
+    }
   },
   info : {type : String},
   active : {type : Boolean}
